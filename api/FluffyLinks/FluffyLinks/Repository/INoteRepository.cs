@@ -7,5 +7,7 @@ namespace FluffyLinks.Repository
         Task<List<Note>> GetAllNotesByUserIdAsync(string userId);
 
         Task InsertNotesAsync(Note note);
+
+        Task<Note> GetNoteByIdAsync(string id);
     }
 }

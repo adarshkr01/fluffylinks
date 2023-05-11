@@ -26,5 +26,10 @@ namespace FluffyLinks.Repository
         {
             await _notesCollection.InsertOneAsync(note);
         }
+
+        public async Task<Note> GetNoteByIdAsync(string id)
+        {
+            return await _notesCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+        }
     }
 }
