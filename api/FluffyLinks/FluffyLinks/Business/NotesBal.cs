@@ -20,6 +20,8 @@ namespace FluffyLinks.Business
         public async Task InsertNoteAsync(CreateNoteRequest request)
         {
             var note = _mapper.Map<Note>(request);
+            note.CreatedAt = DateTimeOffset.Now;
+            
             await _noteRepository.InsertNotesAsync(note);
         }
 

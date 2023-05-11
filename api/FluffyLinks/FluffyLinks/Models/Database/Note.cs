@@ -18,5 +18,9 @@ namespace FluffyLinks.Models.Database
         public string HighlightedText { get; set; }    
 
         public string UserId { get; set; }
+
+        public DateTimeOffset CreatedAt { get; set; }
+
+        public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.Now;
     }
 }
