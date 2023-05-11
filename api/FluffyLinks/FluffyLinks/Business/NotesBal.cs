@@ -1,20 +1,25 @@
-﻿using FluffyLinks.Models.Database;
+﻿using AutoMapper;
+using FluffyLinks.Models.Database;
+using FluffyLinks.Models.Request;
 using FluffyLinks.Repository;
 
 namespace FluffyLinks.Business
 {
     public class NotesBal : INotesBal
     {
-        private readonly INoteRepository noteRepository;
+        private readonly INoteRepository _noteRepository;
+        private readonly IMapper _mapper;
 
-        public NotesBal(INoteRepository noteRepository)
+        public NotesBal(INoteRepository noteRepository, IMapper mapper)
         {
-            this.noteRepository = noteRepository;
+            _noteRepository = noteRepository;
+            _mapper = mapper;
         }
 
-        public async Task InsertNoteAsync(Note note)
+        public async Task InsertNoteAsync(CreateNoteRequest request)
         {
-            await this.noteRepository.InsertNotesAsync(note);
+            var note = _mapper.Map<Note>(request);
+            await _noteRepository.InsertNotesAsync(note);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace FluffyLinks.Models.Database
 
         public string Description { get; set; }
 
+        public string HighlightedText { get; set; }    
+
         public string UserId { get; set; }
     }
 }

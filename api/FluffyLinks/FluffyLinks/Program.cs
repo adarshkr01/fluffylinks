@@ -29,6 +29,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddScoped<INotesBal, NotesBal>();
 
 builder.Services.AddScoped<INoteRepository, NoteRepository>();

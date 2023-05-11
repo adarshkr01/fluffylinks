@@ -1,4 +1,5 @@
 ﻿using FluffyLinks.Business;
+using FluffyLinks.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FluffyLinks.Controllers
@@ -14,17 +15,20 @@ namespace FluffyLinks.Controllers
             this.notesBal = notesBal;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllNotes()
+        [HttpPost]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> CreateNote(CreateNoteRequest request)
         {
-            await notesBal.InsertNoteAsync(new Models.Database.Note
+            try
             {
-                Title = "Test Title",
-                Url = "https://google.com",
-                Description = "Test Description"
-            });
-
-            return Ok();
+                await notesBal.InsertNoteAsync(request);
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
