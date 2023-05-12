@@ -4,10 +4,14 @@ namespace FluffyLinks.Repository
 {
     public interface INoteRepository
     {
-        Task<List<Note>> GetAllNotesByUserIdAsync(string userId);
+        Task<List<Note>> GetNotesByUserIdAsync(string userId);
 
-        Task InsertNotesAsync(Note note);
+        Task InsertNoteAsync(Note note);
 
         Task<Note> GetNoteByIdAsync(string id);
+
+        Task DeleteNoteByIdAsync(string id);
+
+        Task<List<Note>> GetNotesByUrlAsync(string url);
     }
 }

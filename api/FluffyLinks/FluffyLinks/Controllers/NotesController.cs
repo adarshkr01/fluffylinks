@@ -3,6 +3,7 @@ using FluffyLinks.Exceptions;
 using FluffyLinks.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using FluffyLinks.Models.Database;
 
 namespace FluffyLinks.Controllers
 {
@@ -30,7 +31,7 @@ namespace FluffyLinks.Controllers
             {
                 return Problem(
                     "Error occurred while processing your request.",
-                    statusCode: (int?)HttpStatusCode.InternalServerError,
+                    statusCode: (int?) HttpStatusCode.InternalServerError,
                     title: "Create Note Exception",
                     type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                     instance: HttpContext.Request.Path);
@@ -38,6 +39,7 @@ namespace FluffyLinks.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Note), 200)]
         public async Task<IActionResult> GetNoteById(string id)
         {
             try
@@ -52,6 +54,69 @@ namespace FluffyLinks.Controllers
             catch (FormatException ex)
             {
                 return BadRequest();
+            }
+            catch (Exception)
+            {
+                return Problem(
+                    "Error occurred while processing your request.",
+                    statusCode: (int?) HttpStatusCode.InternalServerError,
+                    title: "Get Note By Id Exception",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    instance: HttpContext.Request.Path);
+            }
+        }
+
+        [HttpGet("user/{userId}")]
+        [ProducesResponseType(typeof(List<Note>), 200)]
+        public async Task<IActionResult> GetNotesByUserId(string userId)
+        {
+            try
+            {
+                var response = await notesBal.GetNotesByUserIdAsync(userId);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                return Problem(
+                    "Error occurred while processing your request.",
+                    statusCode: (int?) HttpStatusCode.InternalServerError,
+                    title: "Get Note By Id Exception",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    instance: HttpContext.Request.Path);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteNoteById(string id)
+        {
+            try
+            {
+                await notesBal.DeleteNoteByIdAsync(id);
+                return NoContent();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return Problem(
+                    "Error occurred while processing your request.",
+                    statusCode: (int?)HttpStatusCode.InternalServerError,
+                    title: "Get Note By Id Exception",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    instance: HttpContext.Request.Path);
+            }
+        }
+
+        [HttpGet("url/{url}")]
+        [ProducesResponseType(typeof(List<Note>), 200)]
+        public async Task<IActionResult> GetNotesByUrlAsync(string url)
+        {
+            try
+            {
+                var response = await notesBal.GetNotesByUrlAsync(url);
+                return Ok(response);
             }
             catch (Exception)
             {

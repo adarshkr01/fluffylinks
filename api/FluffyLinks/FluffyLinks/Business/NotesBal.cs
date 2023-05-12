@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Web;
+using AutoMapper;
 using FluffyLinks.Exceptions;
 using FluffyLinks.Models.Database;
 using FluffyLinks.Models.Request;
@@ -20,9 +21,11 @@ namespace FluffyLinks.Business
         public async Task InsertNoteAsync(CreateNoteRequest request)
         {
             var note = _mapper.Map<Note>(request);
+
+            note.Url = HttpUtility.UrlDecode(note.Url).ToLower();
             note.CreatedAt = DateTimeOffset.Now;
             
-            await _noteRepository.InsertNotesAsync(note);
+            await _noteRepository.InsertNoteAsync(note);
         }
 
         public async Task<Note> GetNoteByIdAsync(string id)
@@ -35,6 +38,23 @@ namespace FluffyLinks.Business
             }
 
             return note;
+        }
+
+        public async Task<List<Note>> GetNotesByUserIdAsync(string userId)
+        {
+            return await _noteRepository.GetNotesByUserIdAsync(userId);
+        }
+
+        public async Task DeleteNoteByIdAsync(string id)
+        {
+            await GetNoteByIdAsync(id);
+
+            await _noteRepository.DeleteNoteByIdAsync(id);
+        }
+
+        public async Task<List<Note>> GetNotesByUrlAsync(string url)
+        {
+            return await _noteRepository.GetNotesByUrlAsync(HttpUtility.UrlDecode(url).ToLower());
         }
     }
 }
