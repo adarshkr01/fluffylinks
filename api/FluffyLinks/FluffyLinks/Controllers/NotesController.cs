@@ -20,7 +20,7 @@ namespace FluffyLinks.Controllers
 
         [HttpPost]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> CreateNote(CreateNoteRequest request)
+        public async Task<IActionResult> CreateNote([FromBody] CreateNoteRequest request)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace FluffyLinks.Controllers
             {
                 return NotFound();
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 return BadRequest();
             }
@@ -119,6 +119,30 @@ namespace FluffyLinks.Controllers
                 return Ok(response);
             }
             catch (Exception)
+            {
+                return Problem(
+                    "Error occurred while processing your request.",
+                    statusCode: (int?)HttpStatusCode.InternalServerError,
+                    title: "Get Note By Id Exception",
+                    type: "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    instance: HttpContext.Request.Path);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> UpdateNote(string id, [FromBody] UpdateNoteRequest request)
+        {
+            try
+            {
+                await notesBal.UpdateNoteAsync(id, request);
+                return NoContent();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception exs)
             {
                 return Problem(
                     "Error occurred while processing your request.",

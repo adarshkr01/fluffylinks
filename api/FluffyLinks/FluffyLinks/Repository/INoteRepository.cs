@@ -13,5 +13,7 @@ namespace FluffyLinks.Repository
         Task DeleteNoteByIdAsync(string id);
 
         Task<List<Note>> GetNotesByUrlAsync(string url);
+
+        Task UpdateNoteAsync(string id, Note note);
     }
 }

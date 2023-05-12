@@ -41,5 +41,10 @@ namespace FluffyLinks.Repository
         {
             return await _notesCollection.AsQueryable().Where(x => x.Url == url).ToListAsync();
         }
+
+        public async Task UpdateNoteAsync(string id, Note note)
+        {
+            await _notesCollection.ReplaceOneAsync(x => x.Id == id, note);
+        }
     }
 }

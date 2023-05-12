@@ -14,5 +14,7 @@ namespace FluffyLinks.Business
         Task DeleteNoteByIdAsync(string id);
 
         Task<List<Note>> GetNotesByUrlAsync(string url);
+
+        Task UpdateNoteAsync(string id, UpdateNoteRequest note);
     }
 }

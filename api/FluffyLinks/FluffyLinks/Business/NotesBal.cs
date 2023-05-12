@@ -56,5 +56,18 @@ namespace FluffyLinks.Business
         {
             return await _noteRepository.GetNotesByUrlAsync(HttpUtility.UrlDecode(url).ToLower());
         }
+
+        public async Task UpdateNoteAsync(string id, UpdateNoteRequest updatedNote)
+        {
+            var note = await GetNoteByIdAsync(id);
+
+            note.Url = updatedNote.Url;
+            note.Title = updatedNote.Title;
+            note.Description = updatedNote.Description;
+            note.HighlightedText = updatedNote.HighlightedText;
+            note.UpdatedAt = DateTimeOffset.Now;
+
+            await _noteRepository.UpdateNoteAsync(id, note);
+        }
     }
 }
