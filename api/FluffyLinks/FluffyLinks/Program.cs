@@ -26,6 +26,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "localCors",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200");
+        });
+});
+
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
@@ -41,6 +50,8 @@ var app = builder.Build();
 app.UseSwagger();
 
 app.UseSwaggerUI();
+
+app.UseCors("localCors");
 
 app.UseHttpsRedirection();
 
