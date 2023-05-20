@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Note } from '../models/Note';
+import { BackendService } from '../shared/backend.service';
 
 @Component({
   selector: 'app-notes',
@@ -11,15 +11,12 @@ export class NotesComponent {
   loading = true;
   notes: Note[] = [];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private backend: BackendService) {}
 
   ngOnInit() {
-    this.httpClient
-      .get<Note[]>('https://fluffylinks.onrender.com/api/notes/user/string')
-      .subscribe((data) => {
-        this.notes = data;
-      });
-
-    this.loading = false;
+    this.backend.getNotesByUserId('string').subscribe((data) => {
+      this.notes = data;
+      this.loading = false;
+    });
   }
 }

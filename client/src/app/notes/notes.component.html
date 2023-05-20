@@ -1,5 +1,27 @@
 <mat-spinner *ngIf="loading" diameter="50" color="accent"></mat-spinner>
 
 <span *ngFor="let note of notes">
-    {{ note.title }}
+    <mat-card class="notes-card">
+        <mat-card-header>
+          <mat-card-subtitle>{{ note.url }}</mat-card-subtitle>
+          <mat-card-title>{{ note.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ note.description }}</p>
+          <mat-card-subtitle>{{ note.highlightedText }}</mat-card-subtitle>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="primary">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+          <button mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="primary">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+    </mat-card>
+      
 </span>

@@ -1,0 +1,32 @@
+<h3>Add a note</h3>
+
+<form [formGroup]="addNoteForm" (ngSubmit)="onSubmit()" class="add-note-form">
+    <mat-form-field appearance="outline" class="control-full-width">
+        <mat-label>URL</mat-label>
+        <input matInput formControlName="url" required>
+        <mat-error *ngIf="url?.invalid && (url?.dirty || url?.touched)">URL is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="control-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" required>
+        <mat-error *ngIf="title?.invalid && (title?.dirty || title?.touched)">Title is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="control-full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+        <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">Description is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="control-full-width">
+        <mat-label>Highlighted Text</mat-label>
+        <input matInput formControlName="highlightedText" required>
+        <mat-error *ngIf="highlightedText?.invalid && (highlightedText?.dirty || highlightedText?.touched)">Highlighted Text is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" color="primary" [disabled]="btnLoading || addNoteForm.invalid" class="submitButton">
+        <span *ngIf="!btnLoading">Submit</span>
+        <mat-spinner *ngIf="btnLoading" diameter="20"></mat-spinner>
+    </button>
+</form>
