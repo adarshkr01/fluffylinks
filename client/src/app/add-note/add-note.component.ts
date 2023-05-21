@@ -37,9 +37,15 @@ export class AddNoteComponent {
         userId: 'string',
       };
 
-      this.backend.postNote(note).subscribe((data) => {
-        this.btnLoading = false;
-        this.openSnackbar('Note saved successfully!');
+      this.backend.postNote(note).subscribe({
+        next: () => {
+          this.btnLoading = false;
+          this.openSnackbar('Note saved successfully!');
+        },
+        error: (error) => {
+          this.btnLoading = false;
+          this.openSnackbar(error.message);
+        },
       });
     }
   }
